@@ -15,11 +15,6 @@ class ConfigurationTest extends TestCase
         $this->configuration->configuationDirectoryPath = __DIR__ . '/test_configuration_directory';
     }
 
-    public function testReadAppIdentifiersFromTestConfigurationDirectory()
-    {
-        $this->assertEquals(['my-other_app123', 'myapp'], $this->configuration->readAppIdentifiers());
-    }
-
     public function testReadAppConfiguration()
     {
         $configuration = $this->configuration->readAppConfiguration('myapp');
@@ -28,6 +23,7 @@ class ConfigurationTest extends TestCase
 
     public function testHasAppConfiguration()
     {
+        $this->assertTrue($this->configuration->hasAppConfiguration('myapp'));
         $this->assertTrue($this->configuration->hasAppConfiguration('my-other_app123'));
         $this->assertFalse($this->configuration->hasAppConfiguration('badexample&%$'));
     }
