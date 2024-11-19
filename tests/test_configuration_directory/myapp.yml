@@ -1,0 +1,7 @@
+links:
+  ios: https://itunes.apple.com/us/app/myapp/id123456789
+  android: https://play.google.com/store/apps/details?id=com.myapp
+page:
+  title: My App
+  background-color: '#f0f0f0'
+  app-icon: myapp.png

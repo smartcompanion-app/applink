@@ -1,0 +1,27 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#app-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    box-shadow: rgba(0,0,0,.5) 0px 4px 6px;
+    margin-bottom: 40px;
+}
+
+a.badge {
+    text-decoration: none;
+    color: none;
+}
+a.badge > img {
+    display: block;
+    height: 60px;
+}
+a.badge + a.badge {
+    margin-top: 15px;
+}
