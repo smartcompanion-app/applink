@@ -10,18 +10,6 @@ class Configuration
 
     protected $configuationDirectoryPath = __DIR__ . "/../storage/configuration";
 
-    public function readAppIdentifiers()
-    {
-        $appIdentifiers = [];
-        $files = scandir($this->configuationDirectoryPath);
-        foreach ($files as $file) {
-            if (preg_match('/^([A-Za-z0-9\-_]+)\.yml$/', $file, $matches)) {
-                $appIdentifiers[] = $matches[1];
-            }
-        }
-        return $appIdentifiers;
-    }
-
     public function hasAppConfiguration(string $appIdentifier)
     {        
         if (!preg_match(self::REGEX_APP_IDENTIFIER, $appIdentifier)) {

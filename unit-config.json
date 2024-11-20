@@ -1,0 +1,14 @@
+{
+    "listeners": {
+      "*:80": {
+        "pass": "applications/php"
+      }
+    },  
+    "applications": {      
+      "php": {
+        "type": "php",
+        "root": "/applink/public",
+        "script": "index.php"
+      }
+    }
+  }
