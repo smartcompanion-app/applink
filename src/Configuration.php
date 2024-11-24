@@ -24,7 +24,8 @@ class Configuration
         $file = $this->configuationDirectoryPath . '/' . $appIdentifier . '.yml';
         
         try {
-            return Yaml::parseFile($file);
+            $configuration = Yaml::parseFile($file);
+            return $configuration;
         } catch (\Exception $e) {
             throw new \Exception("Error reading configuration file for app identifier: $appIdentifier, details: " . $e->getMessage());
         }
