@@ -8,7 +8,7 @@
     <meta property="og:url" content="<?php echo $page['base-url']; ?>?app=<?php echo $app; ?>" />
     <meta property="og:image" content="<?php echo $page['base-url']; ?>/icons/<?php echo $page['app-icon']; ?>" />
     <title><?php echo $page['title']; ?></title>
-    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body style="background-color: <?php echo $page['background-color']; ?>">
     <main>
