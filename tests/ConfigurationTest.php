@@ -12,16 +12,16 @@ class ConfigurationTest extends TestCase
     public function setUp(): void
     {
         $this->configuration = new Configuration();
-        $this->configuration->configuationDirectoryPath = __DIR__ . '/test_configuration_directory';
+        $this->configuration->setConfigurationDirectoryPath(__DIR__ . '/test_configuration_directory');
     }
 
-    public function testReadAppConfiguration()
+    public function testReadAppConfiguration(): void
     {
         $configuration = $this->configuration->readAppConfiguration('myapp');
         $this->assertEquals('My App', $configuration['page']['title']);
     }
 
-    public function testHasAppConfiguration()
+    public function testHasAppConfiguration(): void
     {
         $this->assertTrue($this->configuration->hasAppConfiguration('myapp'));
         $this->assertTrue($this->configuration->hasAppConfiguration('my-other_app123'));

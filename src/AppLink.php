@@ -4,9 +4,13 @@ namespace SmartCompanion;
 
 class AppLink
 {
-    const REGEX_IOS_USER_AGENT = '/iPhone|iPad|iPod/';
-    const REGEX_ANDROID_USER_AGENT = '/Android/';
+    public const REGEX_IOS_USER_AGENT = '/iPhone|iPad|iPod/';
+    public const REGEX_ANDROID_USER_AGENT = '/Android/';
 
+    /**
+     * @param array<string, string> $appLinks
+     * @param string $userAgentString
+     */
     public function tryRedirectToApp(array $appLinks, string $userAgentString): bool
     {
         $detectedOS = $this->detectMobileOS($userAgentString);
@@ -17,7 +21,7 @@ class AppLink
         return false;
     }
 
-    public function detectMobileOS(string $userAgentString)
+    public function detectMobileOS(string $userAgentString): string
     {
         if (preg_match(self::REGEX_IOS_USER_AGENT, $userAgentString)) {
             return 'ios';
@@ -28,7 +32,7 @@ class AppLink
         }
     }
 
-    public function redirect(string $link)
+    public function redirect(string $link): void
     {
         header("Location: $link", true, 302);
     }

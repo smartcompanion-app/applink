@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  - pull_request
+  - push
+
+permissions:
+  contents: read
+
+jobs:
+
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Composer dependencies
+        run: composer install
+      - name: Unit tests
+        run: vendor/bin/phpunit
+      - name: Static code analysis (PHPStan)
+        run: vendor/bin/phpstan analyse -l 6 src tests public
+      - name: PSR12 code style check
+        run: vendor/bin/phpcs --standard=PSR12 tests src public
