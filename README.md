@@ -2,7 +2,7 @@
 
 > One shareable link to all your app market listings 
 
-![applink overview](docs/applink.svg)
+<img src="docs/applink.svg" alt="applink overview" style="width: 100%">
 
  - **Automatic Device Detection**: Redirect users to the correct app market (Google Play or Apple App Store) based on the device type found within the HTTP user agent string.
  - **Fallback Option**: If automatic detection fails, users are directed to a webpage for manual app store selection.
@@ -42,7 +42,7 @@ icons/
 
 Within the `configuration` subdirectory a `yml` file for each app needs to be added. The filename of the `yml` file corresponds to the `path` in the applink (e.g., `https://applink.example.com/app1`). Within the `icons` subfolder icon images can be placed, which will be served to users. 
 
-### Full example
+### Example
 
 Within the `docs/example_storage` directory a full example is available. 
 
