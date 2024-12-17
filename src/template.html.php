@@ -13,8 +13,9 @@
     <meta property="og:image" content="<?php echo $page['base-url']; ?>/icons/<?php echo $page['app-icon']; ?>" />
     <title><?php echo $page['title']; ?></title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="<?php echo $page['base-url']; ?>/icons/<?php echo $page['app-icon']; ?>" type="image/png" />
 </head>
-<body style="background-color: <?php echo $page['background-color']; ?>">
+<body style="background: <?php echo $page['background-color']; ?>">
     <main>
         <?php if (isset($page['app-icon'])) : ?>
             <img

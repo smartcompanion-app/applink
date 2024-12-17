@@ -16,4 +16,6 @@ ENV PATH="$PATH:/usr/local/bin"
 RUN docker-php-ext-configure zip && docker-php-ext-install zip
 RUN composer install
 
+RUN ln -s /applink/storage/icons /applink/public/icons
+
 EXPOSE 80

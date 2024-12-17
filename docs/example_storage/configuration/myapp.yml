@@ -1,0 +1,8 @@
+links:
+  ios: https://apps.apple.com/de/app/festung-kufstein/id1090047406?platform=iphone
+  android: https://play.google.com/store/apps/details?id=at.beyondit.audioguide
+page:
+  base-url: http://localhost:9080
+  title: My Example App
+  background-color: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,217,218,1) 56%, rgba(0,212,255,1) 100%)'
+  app-icon: example_icon.png

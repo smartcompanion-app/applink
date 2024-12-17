@@ -1,0 +1,30 @@
+{
+    "listeners": {
+      "*:9080": {
+        "pass": "routes"
+      }
+    },  
+    "routes": [
+      {
+        "match": {
+          "uri": "!/index.php"
+        },
+        "action": {
+          "share": [
+            "./public$uri"
+          ],
+          "types": ["image/*", "text/css"],
+          "fallback": {
+            "pass": "applications/php"
+          }
+        }
+      }
+    ],
+    "applications": {      
+      "php": {
+        "type": "php",
+        "root": "./public",
+        "script": "index.php"
+      }
+    }
+  }
