@@ -1,0 +1,9 @@
+links:
+  ios: https://apps.apple.com/app/atlas-trails/id6450123456
+  android: https://play.google.com/store/apps/details?id=app.atlastrails
+page:
+  base-url: http://localhost:9080
+  title: Atlas Trails
+  description: Discover 20,000 hiking trails with offline maps, live navigation and summit stories.
+  background-color: 'radial-gradient(circle at 15% 20%, #34d399 0%, transparent 45%), radial-gradient(circle at 85% 85%, #0ea5e9 0%, transparent 50%), linear-gradient(135deg, #064e3b 0%, #0f172a 100%)'
+  app-icon: atlas-trails.png

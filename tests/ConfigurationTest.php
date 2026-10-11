@@ -107,7 +107,7 @@ class ConfigurationTest extends TestCase
     {
         $configuration = new Configuration(__DIR__ . '/../docs/example_storage');
 
-        $this->assertTrue($configuration->hasAppConfiguration('myapp'));
+        $this->assertTrue($configuration->hasAppConfiguration('atlas-trails'));
     }
 
     public function testStoragePathFromEnvironment(): void
@@ -115,13 +115,14 @@ class ConfigurationTest extends TestCase
         putenv('APPLINK_STORAGE=' . __DIR__ . '/../docs/example_storage');
 
         $this->assertSame(__DIR__ . '/../docs/example_storage', Configuration::defaultStoragePath());
-        $this->assertTrue((new Configuration())->hasAppConfiguration('myapp'));
+        $this->assertTrue((new Configuration())->hasAppConfiguration('atlas-trails'));
     }
 
     public function testExampleConfigurationIsValid(): void
     {
-        $configuration = (new Configuration(__DIR__ . '/../docs/example_storage'))->readAppConfiguration('myapp');
+        $configuration = (new Configuration(__DIR__ . '/../docs/example_storage'))
+            ->readAppConfiguration('atlas-trails');
 
-        $this->assertSame('My Example App', $configuration->title);
+        $this->assertSame('Atlas Trails', $configuration->title);
     }
 }
