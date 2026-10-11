@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.png binary
+*.svg text
+
+/.github export-ignore
+/docs export-ignore
+/tests export-ignore

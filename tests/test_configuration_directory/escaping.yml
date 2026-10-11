@@ -1,0 +1,8 @@
+links:
+  ios: https://apps.apple.com/app/id1?a=1&b=2
+page:
+  base-url: https://applink.example.com/
+  title: '<script>alert("x")</script>'
+  description: Tom & Jerry's "App"
+  background-color: '"><script>alert(1)</script>'
+  app-icon: my icon.png

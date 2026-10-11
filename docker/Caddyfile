@@ -1,0 +1,27 @@
+{
+	# TLS is terminated by a reverse proxy or load balancer in front of the container
+	auto_https off
+	admin off
+	frankenphp
+}
+
+:80 {
+	log
+	@healthcheck path /healthz
+	log_skip @healthcheck
+
+	encode zstd br gzip
+	header -Server
+
+	# App icons are served straight from the mounted storage directory
+	handle_path /icons/* {
+		root * {$APPLINK_STORAGE:/applink/storage}/icons
+		file_server
+	}
+
+	# Static assets from public/, everything else is handled by public/index.php
+	handle {
+		root * /applink/public
+		php_server
+	}
+}

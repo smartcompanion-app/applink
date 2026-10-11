@@ -1,0 +1,55 @@
+name: Bug report
+description: Report something that does not work as documented.
+labels: ['bug']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happens, and what did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        The smaller the reproduction, the faster this gets fixed. The
+        configuration in `docs/example_storage` is a good starting point.
+      placeholder: |
+        1. Start the container with the example configuration
+        2. Open http://localhost:9080/myapp on ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: App configuration
+      description: The `.yml` file of the affected app, with anything private removed.
+      render: yaml
+
+  - type: input
+    id: version
+    attributes:
+      label: applink version
+      description: The image tag you are running.
+      placeholder: '0.2.0'
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device, OS and browser
+      description: Device detection depends on the user agent, so this matters for redirect issues.
+      placeholder: 'iPad Air, iPadOS 18, Safari'
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant output of `docker logs`.
+      render: shell

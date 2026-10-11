@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SmartCompanion;
 
 class AppLink
@@ -8,17 +10,16 @@ class AppLink
     public const REGEX_ANDROID_USER_AGENT = '/Android/';
 
     /**
+     * Returns the app market link matching the device of the user agent, or null if there is none.
+     *
+     * iPads on iPadOS 13+ identify as a Mac and are not detected here; the fallback page
+     * handles them on the client side.
+     *
      * @param array<string, string> $appLinks
-     * @param string $userAgentString
      */
-    public function tryRedirectToApp(array $appLinks, string $userAgentString): bool
+    public function resolveLink(array $appLinks, string $userAgentString): ?string
     {
-        $detectedOS = $this->detectMobileOS($userAgentString);
-        if (isset($appLinks[$detectedOS])) {
-            $this->redirect($appLinks[$detectedOS]);
-            return true;
-        }
-        return false;
+        return $appLinks[$this->detectMobileOS($userAgentString)] ?? null;
     }
 
     public function detectMobileOS(string $userAgentString): string
@@ -30,10 +31,5 @@ class AppLink
         } else {
             return 'other';
         }
-    }
-
-    public function redirect(string $link): void
-    {
-        header("Location: $link", true, 302);
     }
 }
