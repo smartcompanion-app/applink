@@ -1,21 +1,46 @@
-FROM unit:1.33.0-php8.3
+# syntax=docker/dockerfile:1
 
-COPY ./unit-config.json /docker-entrypoint.d/unit-config.json
-
-# PHP extension requirements
-RUN apt-get update && apt-get install -y zip libzip-dev
+# Production dependencies only, with an authoritative classmap autoloader
+FROM composer:2.10.3 AS vendor
 
 WORKDIR /applink
-COPY ./public ./public
-COPY ./src ./src
-COPY composer.json .
-COPY composer.lock .
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-autoloader --no-scripts \
+        --ignore-platform-reqs
+COPY src ./src
+RUN composer dump-autoload --no-dev --classmap-authoritative --ignore-platform-reqs
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-ENV PATH="$PATH:/usr/local/bin"
-RUN docker-php-ext-configure zip && docker-php-ext-install zip
-RUN composer install
 
-RUN ln -s /applink/storage/icons /applink/public/icons
+FROM dunglas/frankenphp:1.13.1-php8.5.11-alpine
 
+LABEL org.opencontainers.image.title="applink" \
+      org.opencontainers.image.description="One shareable link to all your app market listings" \
+      org.opencontainers.image.source="https://github.com/smartcompanion-app/applink" \
+      org.opencontainers.image.licenses="BSD-2-Clause"
+
+ENV APPLINK_STORAGE=/applink/storage
+
+# Run as an unprivileged user, which still may bind port 80
+RUN apk add --no-cache --virtual .build-deps libcap \
+    && adduser -D -H -u 1000 applink \
+    && setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
+    && chown -R applink:applink /config/caddy /data/caddy \
+    && apk del .build-deps \
+    && cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY docker/php.ini "$PHP_INI_DIR/conf.d/zz-applink.ini"
+COPY docker/Caddyfile /etc/frankenphp/Caddyfile
+
+WORKDIR /applink
+COPY --from=vendor /applink/vendor ./vendor
+COPY public ./public
+COPY src ./src
+RUN mkdir -p storage/configuration storage/icons
+
+USER applink
 EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget -q -O /dev/null http://127.0.0.1/healthz || exit 1
+
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

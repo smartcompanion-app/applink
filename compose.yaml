@@ -1,0 +1,10 @@
+# Local run with the example configuration: http://localhost:9080/myapp
+services:
+  applink:
+    build: .
+    image: ghcr.io/smartcompanion-app/applink:latest
+    ports:
+      - "9080:80"
+    volumes:
+      - ./docs/example_storage:/applink/storage:ro
+    restart: unless-stopped

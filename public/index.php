@@ -1,28 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use SmartCompanion\Configuration;
-use SmartCompanion\AppLink;
-use SmartCompanion\Uri;
+use SmartCompanion\Application;
 
-$configuration = new Configuration();
-$appLink = new AppLink();
-$uri = new Uri();
-
-try {
-    $app = $uri->getApp();
-
-    if ($configuration->hasAppConfiguration($app)) {
-        $appConfiguration = $configuration->readAppConfiguration($app);
-    }
-    if (
-        isset($appConfiguration) &&
-        !$appLink->tryRedirectToApp($appConfiguration['links'], $_SERVER['HTTP_USER_AGENT'])
-    ) {
-        $page = $appConfiguration['page'];
-        $links = $appConfiguration['links'];
-        include('../src/template.html.php');
-    }
-} catch (\Exception $e) {
-}
+(new Application())->handle($_SERVER)->send();
