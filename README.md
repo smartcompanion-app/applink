@@ -9,7 +9,9 @@
 [![PHP](https://img.shields.io/badge/PHP-8.4%2B-777bb4.svg)](composer.json)
 [![license](https://img.shields.io/github/license/smartcompanion-app/applink.svg)](LICENSE)
 
-<img src="docs/applink.svg" alt="applink overview" style="width: 100%">
+<p align="center">
+  <img src="docs/applink-hero.jpg" alt="applink: connect your apps, everywhere" width="100%">
+</p>
 
 ## ✨ Features
 
@@ -41,9 +43,12 @@ git clone https://github.com/smartcompanion-app/applink.git && cd applink
 docker run --rm -p 9080:80 -v "$(pwd)/docs/example_storage:/applink/storage:ro" ghcr.io/smartcompanion-app/applink
 ```
 
-Open [http://localhost:9080/myapp](http://localhost:9080/myapp). A desktop browser shows the landing page; a phone is redirected to its app store.
+Open [http://localhost:9080/atlas-trails](http://localhost:9080/atlas-trails). A desktop browser shows the landing page; a phone is redirected to its app store.
 
-<img src="docs/fallback-page.png" alt="applink landing page on a desktop browser" width="600">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/fallback-page-dark.jpg">
+  <img src="docs/fallback-page-light.jpg" alt="applink landing page of the example app Atlas Trails" width="600">
+</picture>
 
 The image is published to both registries, so use whichever you prefer:
 
@@ -85,18 +90,18 @@ Each `.yml` file in `configuration/` is one app, and its filename is the path of
 
 ### Example
 
-A full example is available in [`docs/example_storage`](docs/example_storage):
+A full example, the fictitious *Atlas Trails* app, is available in [`docs/example_storage`](docs/example_storage):
 
 ```yaml
 links:
-  ios: https://apps.apple.com/de/app/festung-kufstein/id1090047406?platform=iphone
-  android: https://play.google.com/store/apps/details?id=at.beyondit.audioguide
+  ios: https://apps.apple.com/app/atlas-trails/id6450123456
+  android: https://play.google.com/store/apps/details?id=app.atlastrails
 page:
   base-url: http://localhost:9080
-  title: My Example App
-  description: Explore the fortress with your personal audio guide.
-  background-color: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,217,218,1) 56%, rgba(0,212,255,1) 100%)'
-  app-icon: example_icon.png
+  title: Atlas Trails
+  description: Discover 20,000 hiking trails with offline maps, live navigation and summit stories.
+  background-color: 'radial-gradient(circle at 15% 20%, #34d399 0%, transparent 45%), radial-gradient(circle at 85% 85%, #0ea5e9 0%, transparent 50%), linear-gradient(135deg, #064e3b 0%, #0f172a 100%)'
+  app-icon: atlas-trails.png
 ```
 
 ### Options
@@ -143,7 +148,7 @@ Requires PHP 8.4+ and Composer:
 
 ```shell
 composer install
-composer serve    # http://localhost:8080/myapp with docs/example_storage
+composer serve    # http://localhost:8080/atlas-trails with docs/example_storage
 composer check    # code style, PHPStan and tests
 ```
 

@@ -26,22 +26,22 @@ expect() {
     fi
 }
 
-expect "fallback page on desktop" "200" "$BASE_URL/myapp"
-expect "fallback page without user agent" "200" -H "User-Agent:" "$BASE_URL/myapp"
-expect "fallback page via query parameter" "200" "$BASE_URL/?app=myapp"
+expect "fallback page on desktop" "200" "$BASE_URL/atlas-trails"
+expect "fallback page without user agent" "200" -H "User-Agent:" "$BASE_URL/atlas-trails"
+expect "fallback page via query parameter" "200" "$BASE_URL/?app=atlas-trails"
 expect "iPhone redirects to the App Store" \
-    "302 https://apps.apple.com/de/app/festung-kufstein/id1090047406?platform=iphone" -A "$IPHONE" "$BASE_URL/myapp"
+    "302 https://apps.apple.com/app/atlas-trails/id6450123456" -A "$IPHONE" "$BASE_URL/atlas-trails"
 expect "Android redirects to Google Play" \
-    "302 https://play.google.com/store/apps/details?id=at.beyondit.audioguide" -A "$ANDROID" "$BASE_URL/myapp"
+    "302 https://play.google.com/store/apps/details?id=app.atlastrails" -A "$ANDROID" "$BASE_URL/atlas-trails"
 expect "unknown app" "404" "$BASE_URL/does-not-exist"
 expect "root" "404" "$BASE_URL/"
 expect "health check" "200" "$BASE_URL/healthz"
 expect "stylesheet" "200" "$BASE_URL/style.css"
 expect "store badge" "200" "$BASE_URL/assets/app-store-badge.svg"
-expect "app icon from storage" "200" "$BASE_URL/icons/example_icon.png"
-expect "no configuration files through icons" "404" --path-as-is "$BASE_URL/icons/../configuration/myapp.yml"
+expect "app icon from storage" "200" "$BASE_URL/icons/atlas-trails.png"
+expect "no configuration files through icons" "404" --path-as-is "$BASE_URL/icons/../configuration/atlas-trails.yml"
 
-if ! curl -s -I -A "$IPHONE" "$BASE_URL/myapp" | grep -qi '^vary: user-agent'; then
+if ! curl -s -I -A "$IPHONE" "$BASE_URL/atlas-trails" | grep -qi '^vary: user-agent'; then
     echo "FAIL redirect is missing 'Vary: User-Agent'"
     failures=$((failures + 1))
 else

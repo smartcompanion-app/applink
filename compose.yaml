@@ -1,4 +1,4 @@
-# Local run with the example configuration: http://localhost:9080/myapp
+# Local run with the example configuration: http://localhost:9080/atlas-trails
 services:
   applink:
     build: .

@@ -14,7 +14,7 @@ This guide covers developing, testing and releasing applink.
     composer install
     ```
 
-1. Serve the example configuration on [http://localhost:8080/myapp](http://localhost:8080/myapp).
+1. Serve the example configuration on [http://localhost:8080/atlas-trails](http://localhost:8080/atlas-trails).
 
     ```shell
     composer serve
