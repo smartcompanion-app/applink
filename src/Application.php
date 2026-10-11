@@ -84,8 +84,10 @@ class Application
 
         return new Response($status, $headers + [
             'Content-Type' => 'text/html; charset=UTF-8',
-            'Content-Security-Policy' => "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; "
-                . "script-src $scriptSource; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+            // Remote and data: images are allowed, so `page.background-color` may use `url(...)`
+            'Content-Security-Policy' => "default-src 'none'; img-src 'self' https: data:; "
+                . "style-src 'self' 'unsafe-inline'; script-src $scriptSource; "
+                . "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
         ], $body);

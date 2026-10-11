@@ -108,7 +108,7 @@ page:
 | `page.title` | yes | App name, shown on the landing page and in link previews. |
 | `page.description` | no | Short description for the landing page, search engines and link previews. |
 | `page.app-icon` | no | Filename of the icon in `icons/`, used on the landing page, as favicon and as preview image. |
-| `page.background-color` | no | Any CSS `background` value: a color, gradient or image. |
+| `page.background-color` | no | Any CSS `background` value: a color, gradient or image, e.g. `url(https://example.com/bg.jpg) center / cover`. Images must be served over `https` (or from `icons/`). |
 | `page.base-url` | no | Public URL of the service, e.g. `https://applink.example.com`. Link previews need absolute URLs, so set it if requests do not reach applink with the public host name. Without it, the URL is derived from the request (`Host` and `X-Forwarded-Proto`). |
 
 Links have to be absolute `https`, `http`, `itms-apps` or `market` URLs. An invalid configuration is reported in the container log, and the link responds with an error page instead of a broken one.

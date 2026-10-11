@@ -70,6 +70,7 @@ class ApplicationTest extends TestCase
             $this->fail("Content-Security-Policy has no script nonce: $csp");
         }
         $this->assertStringContainsString('<script nonce="' . $match[1] . '">', $response->body);
+        $this->assertStringContainsString("img-src 'self' https: data:", $csp);
         $this->assertSame('nosniff', $response->headers['X-Content-Type-Options']);
     }
 
