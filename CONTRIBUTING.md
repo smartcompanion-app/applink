@@ -69,6 +69,8 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 | `deps:` | `deps: bump symfony/yaml` | patch |
 | `docs:`, `chore:`, `ci:`, `test:`, `refactor:` | `ci: cache composer` | none |
 
+The `pr-title` check fails a pull request whose title is not a Conventional Commit.
+
 Every push to `main` updates a `chore: release` pull request, which collects the pending changes, bumps the version and updates `CHANGELOG.md`. Merging that pull request tags the release and creates the GitHub release. It also publishes the multi-platform (`linux/amd64`, `linux/arm64`) Docker image to `ghcr.io/smartcompanion-app/applink` and `stefanhuber332/applink`.
 
 Never edit the version or `CHANGELOG.md` by hand. Both are generated.

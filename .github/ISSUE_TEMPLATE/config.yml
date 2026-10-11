@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Question or usage help
+    url: https://github.com/smartcompanion-app/applink/discussions
+    about: Ask here if something is unclear rather than opening an issue.
   - name: Report a security vulnerability
     url: https://github.com/smartcompanion-app/applink/security/advisories/new
     about: Please report security problems privately rather than in a public issue.
