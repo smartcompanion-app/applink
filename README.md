@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/smartcompanion-app/applink/actions/workflows/ci.yml/badge.svg)](https://github.com/smartcompanion-app/applink/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/smartcompanion-app/applink?sort=semver)](https://github.com/smartcompanion-app/applink/releases)
-[![Docker pulls](https://img.shields.io/docker/pulls/stefanhuber332/applink.svg)](https://hub.docker.com/r/stefanhuber332/applink)
+[![image](https://img.shields.io/badge/image-ghcr.io-2496ed?logo=docker&logoColor=white)](https://github.com/smartcompanion-app/applink/pkgs/container/applink)
 [![platforms](https://img.shields.io/badge/platforms-amd64%20%7C%20arm64-lightgrey.svg)](#-quick-start)
 [![PHP](https://img.shields.io/badge/PHP-8.4%2B-777bb4.svg)](composer.json)
 [![license](https://img.shields.io/github/license/smartcompanion-app/applink.svg)](LICENSE)
@@ -50,14 +50,17 @@ Open [http://localhost:9080/atlas-trails](http://localhost:9080/atlas-trails). A
   <img src="docs/fallback-page-light.jpg" alt="applink landing page of the example app Atlas Trails" width="600">
 </picture>
 
-The image is published to both registries, so use whichever you prefer:
+The image is published to the GitHub Container Registry as [`ghcr.io/smartcompanion-app/applink`](https://github.com/smartcompanion-app/applink/pkgs/container/applink). Tags follow the release version: `0.2.0` (exact), `0.2` (latest patch) and `latest`.
 
-| Registry | Image |
-| --- | --- |
-| GitHub Container Registry | `ghcr.io/smartcompanion-app/applink` |
-| Docker Hub | `stefanhuber332/applink` |
+> **Moving from Docker Hub?** The image `stefanhuber332/applink` is no longer updated. Replace it with `ghcr.io/smartcompanion-app/applink`; the volume path, port and configuration format are unchanged.
 
-Tags follow the release version: `0.2.0` (exact), `0.2` (latest patch) and `latest`.
+### Verify the image
+
+Every image comes with a signed [SLSA build provenance](https://slsa.dev/provenance) attestation, which proves that it was built from this repository by its release workflow, and an SBOM. Check it with the [GitHub CLI](https://cli.github.com/) before deploying:
+
+```shell
+gh attestation verify oci://ghcr.io/smartcompanion-app/applink:0.2 -R smartcompanion-app/applink
+```
 
 ### Docker Compose
 
