@@ -71,6 +71,9 @@ jobs:
       # for a short-lived Sigstore certificate, so there is no signing key to keep.
       id-token: write
       attestations: write
+      # Storage record linking the attested image to its registry, shown on the
+      # organization's artifact metadata pages
+      artifact-metadata: write
     env:
       TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || needs.release-please.outputs.tag_name }}
     steps:
