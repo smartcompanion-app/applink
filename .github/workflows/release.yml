@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+  # (Re)publishes the image of an existing release, e.g. after a failed
+  # publish or to pick up base image security fixes without a new version.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to publish, e.g. v0.2.0'
+        required: true
+        type: string
 
 concurrency:
   group: release
@@ -13,8 +21,7 @@ permissions:
   contents: read
 
 env:
-  GHCR_IMAGE: ghcr.io/smartcompanion-app/applink
-  DOCKERHUB_IMAGE: stefanhuber332/applink
+  IMAGE: ghcr.io/smartcompanion-app/applink
 
 jobs:
 
@@ -30,6 +37,7 @@ jobs:
   # secret is absent.
   release-please:
     name: Release PR
+    if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -37,7 +45,6 @@ jobs:
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
-      version: ${{ steps.release.outputs.version }}
     steps:
       - name: Create release pull request or release
         id: release
@@ -50,16 +57,33 @@ jobs:
   docker:
     name: Publish image
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
+    # always() lets a manual run through although release-please is skipped then
+    if: >-
+      always() && (
+        (github.event_name == 'push' && needs.release-please.outputs.release_created == 'true') ||
+        github.event_name == 'workflow_dispatch'
+      )
     runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
+      # Signing the build provenance: the workflow's OIDC identity is exchanged
+      # for a short-lived Sigstore certificate, so there is no signing key to keep.
+      id-token: write
+      attestations: write
+    env:
+      TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || needs.release-please.outputs.tag_name }}
     steps:
-      - name: Checkout ${{ needs.release-please.outputs.tag_name }}
+      - name: Validate tag
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'$TAG' is not a release tag like v1.2.3"
+            exit 1
+          fi
+      - name: Checkout ${{ env.TAG }}
         uses: actions/checkout@v7
         with:
-          ref: ${{ needs.release-please.outputs.tag_name }}
+          ref: refs/tags/${{ env.TAG }}
       # QEMU emulates arm64 on the amd64 runner for the multi-platform build
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
@@ -71,26 +95,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v4
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: |
-            ${{ env.GHCR_IMAGE }}
-            ${{ env.DOCKERHUB_IMAGE }}
+          images: ${{ env.IMAGE }}
           flavor: |
             latest=true
           # 1.2.3, 1.2 and -- from 1.0.0 on -- 1
           tags: |
-            type=semver,pattern={{version}},value=${{ needs.release-please.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ needs.release-please.outputs.version }}
-            type=semver,pattern={{major}},value=${{ needs.release-please.outputs.version }},enable=${{ !startsWith(needs.release-please.outputs.version, '0.') }}
+            type=semver,pattern={{version}},value=${{ env.TAG }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ env.TAG }}
+            type=semver,pattern={{major}},value=${{ env.TAG }},enable=${{ !startsWith(env.TAG, 'v0.') }}
       - name: Build and push image
+        id: build
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -99,7 +117,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
-          provenance: mode=max
           sbom: true
+          provenance: mode=max
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      # Signed SLSA build provenance, verifiable with
+      # `gh attestation verify oci://ghcr.io/smartcompanion-app/applink:<version> -R smartcompanion-app/applink`
+      - name: Attest build provenance
+        uses: actions/attest@v4
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true

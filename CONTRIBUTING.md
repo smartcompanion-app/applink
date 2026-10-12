@@ -71,10 +71,16 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 
 The `pr-title` check fails a pull request whose title is not a Conventional Commit.
 
-Every push to `main` updates a `chore: release` pull request, which collects the pending changes, bumps the version and updates `CHANGELOG.md`. Merging that pull request tags the release and creates the GitHub release. It also publishes the multi-platform (`linux/amd64`, `linux/arm64`) Docker image to `ghcr.io/smartcompanion-app/applink` and `stefanhuber332/applink`.
+Every push to `main` updates a `chore: release` pull request, which collects the pending changes, bumps the version and updates `CHANGELOG.md`. Merging that pull request tags the release and creates the GitHub release. It also publishes the multi-platform (`linux/amd64`, `linux/arm64`) Docker image to `ghcr.io/smartcompanion-app/applink`, together with an SBOM and a signed build provenance attestation.
 
 Never edit the version or `CHANGELOG.md` by hand. Both are generated.
 
 > **Note**: Pull requests opened with the default `GITHUB_TOKEN` do not trigger workflows, so the release pull request would have no CI checks. To avoid that, add a `RELEASE_TOKEN` repository secret: a fine-grained personal access token scoped to this repository with *Contents: read and write* and *Pull requests: read and write*. The workflow falls back to `GITHUB_TOKEN` when the secret is absent.
 
-Publishing to Docker Hub uses the `DOCKERHUB_USERNAME` repository variable and the `DOCKERHUB_TOKEN` secret. GHCR uses the workflow's own token.
+Publishing needs no stored credentials. The image is pushed with the workflow's own `GITHUB_TOKEN`, and the attestation is signed through its OIDC identity via [Sigstore](https://www.sigstore.dev/).
+
+To publish the image of an existing release again, for example after a failed publish or to pick up base image security fixes without a new version, run the `release` workflow manually with the tag:
+
+```shell
+gh workflow run release.yml -f tag=v0.2.0
+```
