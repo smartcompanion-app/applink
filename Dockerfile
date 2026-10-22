@@ -11,7 +11,7 @@ COPY src ./src
 RUN composer dump-autoload --no-dev --classmap-authoritative --ignore-platform-reqs
 
 
-FROM dunglas/frankenphp:1.13.1-php8.5.11-alpine
+FROM dunglas/frankenphp:1.13.2-php8.5.12-alpine
 
 LABEL org.opencontainers.image.title="applink" \
       org.opencontainers.image.description="One shareable link to all your app market listings" \
