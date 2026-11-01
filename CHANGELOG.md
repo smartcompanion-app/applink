@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2](https://github.com/smartcompanion-app/applink/compare/v0.2.1...v0.2.2) (2026-11-01)
+
+
+### Dependencies
+
+* bump dunglas/frankenphp from 1.13.2-php8.5.12-alpine to 1.13.4-php8.5.12-alpine in the docker-images group ([#13](https://github.com/smartcompanion-app/applink/issues/13)) ([59c07a9](https://github.com/smartcompanion-app/applink/commit/59c07a959287bb3fdba0d633ab1fc6ffcf4b9179))
+* bump the composer-dependencies group with 3 updates ([#14](https://github.com/smartcompanion-app/applink/issues/14)) ([38ec2d9](https://github.com/smartcompanion-app/applink/commit/38ec2d9702ff2922fc91d5414cb8e3d325eddcbe))
+
 ## [0.2.1](https://github.com/smartcompanion-app/applink/compare/v0.2.0...v0.2.1) (2026-10-22)
 
 
